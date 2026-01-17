@@ -1,14 +1,11 @@
 import mongoose from "mongoose";
 
-export const dbConnection = () => {
-  mongoose
-    .connect("mongodb+srv://adi:adi@web0.gvl07.mongodb.net/", {
-      dbName: "intern",
-    })
-    .then(() => {
-      console.log("Connected to database.");
-    })
-    .catch((err) => {
-      console.log(`Some Error occured. ${err}`);
-    });
+export const dbConnection = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("MongoDB Atlas Connected");
+  } catch (error) {
+    console.error("MongoDB connection failed:", error.message);
+    process.exit(1);
+  }
 };
