@@ -10,7 +10,7 @@ const Application = () => {
   const [coverLetter, setCoverLetter] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-
+  const API = import.meta.env.VITE_API_URL;
   const { isAuthorized, user } = useContext(Context);
 
   const navigateTo = useNavigate();
@@ -29,7 +29,7 @@ const Application = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/application/post",
+        `${API}/api/v1/application/post`,
         formData,
         {
           withCredentials: true,

@@ -7,12 +7,12 @@ const JobDetails = () => {
   const { id } = useParams();
   const [job, setJob] = useState({});
   const navigateTo = useNavigate();
-
+  const API = import.meta.env.VITE_API_URL;
   const { isAuthorized, user } = useContext(Context);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/api/v1/job/${id}`, {
+      .get(`${API}/api/v1/job/${id}`, {
         withCredentials: true,
       })
       .then((res) => {

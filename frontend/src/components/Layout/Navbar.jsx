@@ -9,11 +9,11 @@ const Navbar = () => {
   const [show, setShow] = useState(false);
   const { isAuthorized, setIsAuthorized, user } = useContext(Context);
   const navigateTo = useNavigate();
-
+  const API = import.meta.env.VITE_API_URL;
   const handleLogout = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/v1/user/logout",
+        `${API}/api/v1/user/logout`,
         {
           withCredentials: true,
         }
