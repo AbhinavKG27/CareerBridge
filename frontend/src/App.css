@@ -308,9 +308,9 @@ p {
 }
 .heroSection .details .card:hover {
   transition: all 0.3s;
-  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
-  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
   -moz-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
 }
 @media (max-width: 1520px) {
   .heroSection .container,
@@ -457,9 +457,9 @@ p {
 }
 .categories .banner .card:hover {
   transition: all 0.3s;
-  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
-  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
   -moz-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
 }
 .categories .banner .card .icon {
   font-size: 24px;
@@ -528,9 +528,9 @@ p {
 }
 .companies .container .banner .card:hover {
   transition: all 0.3s;
-  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
-  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
   -moz-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
 }
 .companies .container .banner .card .content {
   display: flex;
@@ -619,9 +619,9 @@ p {
 }
 .jobs .container .banner .card:hover {
   transition: all 0.3s;
-  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
-  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
   -moz-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  -webkit-box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
+  box-shadow: 2px 10px 10px -1px rgba(0, 0, 0, 0.17);
 }
 .jobs .container .banner .card p:first-child {
   font-weight: bold;
@@ -1268,9 +1268,9 @@ nav .hamburger {
     gap: 30px;
     align-items: flex-start;
     padding-left: 25px;
-    box-shadow: 9px 0px 16px 0px rgba(0, 0, 0, 0.75);
-    -webkit-box-shadow: 9px 0px 16px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 9px 0px 16px 0px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 9px 0px 16px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 9px 0px 16px 0px rgba(0, 0, 0, 0.75);
   }
   nav .show-menu li a {
     color: #28446f;
