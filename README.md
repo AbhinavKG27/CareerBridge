@@ -50,5 +50,4 @@ This project demonstrates **real-world full-stack development**, including authe
 
 ---
 
-## 📁 Project Structure
 
