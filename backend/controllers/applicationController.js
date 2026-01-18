@@ -3,7 +3,7 @@ import ErrorHandler from "../middlewares/error.js";
 import { Application } from "../models/applicationSchema.js";
 import { Job } from "../models/jobSchema.js";
 
-// Post Application
+// Post Application and Job
 export const postApplication = catchAsyncErrors(async (req, res, next) => {
   const { role } = req.user;
   if (role === "Employer") {
