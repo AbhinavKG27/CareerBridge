@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
 import { Job } from "../models/jobSchema.js";
 import ErrorHandler from "../middlewares/error.js";
@@ -28,8 +29,15 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
   }
 
   const job = await Job.create({
-    title, description, category, country, city, location,
-    fixedSalary, salaryFrom, salaryTo,
+    title,
+    description,
+    category,
+    country,
+    city,
+    location,
+    fixedSalary,
+    salaryFrom,
+    salaryTo,
     postedBy: req.user._id,
   });
 
@@ -37,31 +45,49 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getMyJobs = catchAsyncErrors(async (req, res, next) => {
-  if (req.user.role === "Job Seeker") return next(new ErrorHandler("Job Seeker not allowed to access this resource.", 403));
+  if (req.user.role === "Job Seeker") {
+    return next(new ErrorHandler("Job Seeker not allowed to access this resource.", 403));
+  }
+
   const myJobs = await Job.find({ postedBy: req.user._id });
   res.status(200).json({ success: true, myJobs });
 });
 
 export const updateJob = catchAsyncErrors(async (req, res, next) => {
-  if (req.user.role === "Job Seeker") return next(new ErrorHandler("Job Seeker not allowed to access this resource.", 403));
+  if (req.user.role === "Job Seeker") {
+    return next(new ErrorHandler("Job Seeker not allowed to access this resource.", 403));
+  }
 
   const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return next(new ErrorHandler("Resource not found. Invalid _id", 400));
+  }
+
   const job = await Job.findById(id);
   if (!job) return next(new ErrorHandler("OOPS! Job not found.", 404));
+
   if (job.postedBy.toString() !== req.user._id.toString()) {
     return next(new ErrorHandler("You can update only your own jobs.", 403));
   }
 
   await Job.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+
   res.status(200).json({ success: true, message: "Job Updated!" });
 });
 
 export const deleteJob = catchAsyncErrors(async (req, res, next) => {
-  if (req.user.role === "Job Seeker") return next(new ErrorHandler("Job Seeker not allowed to access this resource.", 403));
+  if (req.user.role === "Job Seeker") {
+    return next(new ErrorHandler("Job Seeker not allowed to access this resource.", 403));
+  }
 
   const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return next(new ErrorHandler("Resource not found. Invalid _id", 400));
+  }
+
   const job = await Job.findById(id);
   if (!job) return next(new ErrorHandler("OOPS! Job not found.", 404));
+
   if (job.postedBy.toString() !== req.user._id.toString()) {
     return next(new ErrorHandler("You can delete only your own jobs.", 403));
   }
@@ -72,7 +98,12 @@ export const deleteJob = catchAsyncErrors(async (req, res, next) => {
 
 export const getSingleJob = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return next(new ErrorHandler("Resource not found. Invalid _id", 400));
+  }
+
   const job = await Job.findById(id);
   if (!job) return next(new ErrorHandler("Job not found.", 404));
+
   res.status(200).json({ success: true, job });
 });

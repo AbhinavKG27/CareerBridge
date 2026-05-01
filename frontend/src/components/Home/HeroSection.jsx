@@ -19,9 +19,13 @@ const HeroSection = () => {
             CareerBridge connects top talent with modern companies. Discover opportunities,
             apply in seconds, and take your career to the next level.
           </p>
-          <div style={{ display: "flex", gap: "0.7rem", marginTop: "1rem" }}>
-            <Link to="/job/getall" className="cta">Explore Jobs</Link>
-            <Link to="/applications/me" className="cta" style={{ background: "transparent", color: "var(--primary)", border: "1px solid var(--border)" }}>Track Applications</Link>
+          <div className="hero-cta">
+            <Link to="/job/getall" className="cta">
+              Explore Jobs
+            </Link>
+            <Link to="/applications/me" className="cta cta-secondary">
+              Track Applications
+            </Link>
           </div>
         </div>
         <div className="image">

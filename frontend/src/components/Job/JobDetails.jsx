@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../main";
+
 const JobDetails = () => {
   const { id } = useParams();
   const [job, setJob] = useState({});
@@ -18,10 +19,10 @@ const JobDetails = () => {
       .then((res) => {
         setJob(res.data.job);
       })
-      .catch((error) => {
+      .catch(() => {
         navigateTo("/notfound");
       });
-  }, []);
+  }, [API, id, navigateTo]);
 
   if (!isAuthorized) {
     return <Navigate to="/login" />;
@@ -33,7 +34,7 @@ const JobDetails = () => {
         <h3>Job Details</h3>
         <div className="banner">
           <p>
-            Title: <span> {job.title}</span>
+            Title: <span>{job.title}</span>
           </p>
           <p>
             Category: <span>{job.category}</span>
@@ -63,9 +64,7 @@ const JobDetails = () => {
               </span>
             )}
           </p>
-          {user && user.role === "Employer" ? (
-            <></>
-          ) : (
+          {user && user.role === "Employer" ? null : (
             <Link to={`/application/${job._id}`}>Apply Now</Link>
           )}
         </div>

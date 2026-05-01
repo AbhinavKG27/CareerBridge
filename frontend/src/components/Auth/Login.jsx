@@ -12,7 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const API = import.meta.env.VITE_API_URL;
-  const { isAuthorized, setIsAuthorized } = useContext(Context);
+  const { isAuthorized, setIsAuthorized, refreshUser } = useContext(Context);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,72 +31,68 @@ const Login = () => {
       setEmail("");
       setPassword("");
       setRole("");
+      await refreshUser();
       setIsAuthorized(true);
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Login failed");
     }
   };
 
-  if(isAuthorized){
-    return <Navigate to={'/'}/>
+  if (isAuthorized) {
+    return <Navigate to={"/"} />;
   }
 
   return (
-    <>
-      <section className="authPage">
+    <section className="authPage">
       <div className="banner">
-          <img src="/login.png" alt="login" />
+        <img src="/login.png" alt="login" />
+      </div>
+      <div className="container">
+        <div className="header">
+          <img src="/JobZeelogo.png" alt="logo" />
+          <h3>Login to your account</h3>
         </div>
-        <div className="container">
-          <div className="header">
-            <img src="/JobZeelogo.png" alt="logo" />
-            <h3>Login to your account</h3>
+        <form onSubmit={handleLogin}>
+          <div className="inputTag">
+            <label>Login As</label>
+            <div>
+              <select value={role} onChange={(e) => setRole(e.target.value)}>
+                <option value="">Select Role</option>
+                <option value="Employer">Employer</option>
+                <option value="Job Seeker">Job Seeker</option>
+              </select>
+              <FaRegUser />
+            </div>
           </div>
-          <form onSubmit={handleLogin}>
-            <div className="inputTag">
-              <label>Login As</label>
-              <div>
-                <select value={role} onChange={(e) => setRole(e.target.value)}>
-                  <option value="">Select Role</option>
-                  <option value="Employer">Employer</option>
-                  <option value="Job Seeker">Job Seeker</option>
-                </select>
-                <FaRegUser />
-              </div>
+          <div className="inputTag">
+            <label>Email Address</label>
+            <div>
+              <input
+                type="email"
+                placeholder="example@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <MdOutlineMailOutline />
             </div>
-            <div className="inputTag">
-              <label>Email Address</label>
-              <div>
-                <input
-                  type="email"
-                  placeholder="example@gmail.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <MdOutlineMailOutline />
-              </div>
+          </div>
+          <div className="inputTag">
+            <label>Password</label>
+            <div>
+              <input
+                type="password"
+                placeholder="Your Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <RiLock2Fill />
             </div>
-            <div className="inputTag">
-              <label>Password</label>
-              <div>
-                <input
-                  type="password"
-                  placeholder="Your Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <RiLock2Fill />
-              </div>
-            </div>
-            <button type="submit">
-              Login
-            </button>
-            <Link to={"/register"}>Register Now</Link>
-          </form>
-        </div>
-       
-      </section>
-    </>
+          </div>
+          <button type="submit">Login</button>
+          <Link to={"/register"}>Register Now</Link>
+        </form>
+      </div>
+    </section>
   );
 };
 

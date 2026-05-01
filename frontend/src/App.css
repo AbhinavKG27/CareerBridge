@@ -75,6 +75,18 @@ a{text-decoration:none;color:inherit}
 .footerShow{padding:1rem;background:var(--surface);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
 .footerHide,.navbarHide{display:none}
 
+.hero-cta{display:flex;gap:.7rem;margin-top:1rem;flex-wrap:wrap}
+.cta{display:inline-block;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;padding:.62rem .95rem;border-radius:12px;font-weight:600}
+.cta-secondary{background:transparent;color:var(--primary);border:1px solid var(--border)}
+
+.jobDetail .banner,.job_post form{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);padding:1.2rem}
+.jobDetail .banner p{margin:.45rem 0;color:var(--muted)}
+.jobDetail .banner span{color:var(--text);font-weight:600}
+
+.job_post .wrapper,.job_post .ranged_salary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.8rem;margin-bottom:.8rem}
+.job_post input,.job_post select,.job_post textarea{width:100%;padding:.8rem;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text)}
+.job_post button{margin-top:.8rem;border:none;padding:.8rem 1rem;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:700}
+
 @media (max-width:900px){
   .heroSection .container,.authPage{grid-template-columns:1fr}
   .authPage .banner{display:none}
