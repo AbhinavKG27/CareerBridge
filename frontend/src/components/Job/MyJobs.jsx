@@ -4,14 +4,13 @@ import toast from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { Context } from "../../main";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const MyJobs = () => {
   const [myJobs, setMyJobs] = useState([]);
   const [editingMode, setEditingMode] = useState(null);
   const { isAuthorized, user } = useContext(Context);
   const API = import.meta.env.VITE_API_URL;
-  const navigateTo = useNavigate();
   //Fetching all jobs
   useEffect(() => {
     const fetchJobs = async () => {
@@ -29,7 +28,7 @@ const MyJobs = () => {
     fetchJobs();
   }, []);
   if (!isAuthorized || (user && user.role !== "Employer")) {
-    navigateTo("/");
+    return <Navigate to="/" />;
   }
 
   //Function For Enabling Editing Mode

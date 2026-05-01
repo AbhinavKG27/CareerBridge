@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import ms from "ms";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -10,15 +9,20 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter your Name!"],
     minLength: [3, "Name must contain at least 3 Characters!"],
     maxLength: [30, "Name cannot exceed 30 Characters!"],
+    trim: true,
   },
   email: {
     type: String,
     required: [true, "Please enter your Email!"],
     validate: [validator.isEmail, "Please provide a valid Email!"],
+    unique: true,
+    lowercase: true,
+    trim: true,
   },
   phone: {
-    type: Number,
+    type: String,
     required: [true, "Please enter your Phone Number!"],
+    trim: true,
   },
   password: {
     type: String,
@@ -38,25 +42,22 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Encrypt password before saving
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
-  }
+  if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
-// Compare password
 userSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  return bcrypt.compare(enteredPassword, this.password);
 };
 
-// Generate JWT token
 userSchema.methods.getJWTToken = function () {
-  const expiresIn = ms('7d');
-  return jwt.sign({ id: this._id }, "mySuperSecretKey123", {
-    expiresIn: expiresIn,
-  });
+  return jwt.sign(
+    { id: this._id },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRE || "7d" }
+  );
 };
 
 export const User = mongoose.model("User", userSchema);

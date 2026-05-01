@@ -52,7 +52,7 @@ const Login = () => {
             <img src="/JobZeelogo.png" alt="logo" />
             <h3>Login to your account</h3>
           </div>
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="inputTag">
               <label>Login As</label>
               <div>
@@ -88,7 +88,7 @@ const Login = () => {
                 <RiLock2Fill />
               </div>
             </div>
-            <button type="submit" onClick={handleLogin}>
+            <button type="submit">
               Login
             </button>
             <Link to={"/register"}>Register Now</Link>

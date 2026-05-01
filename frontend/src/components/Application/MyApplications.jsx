@@ -2,13 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../main";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const MyApplications = () => {
   const { user } = useContext(Context);
   const [applications, setApplications] = useState([]);
   const { isAuthorized } = useContext(Context);
-  const navigateTo = useNavigate();
   const API = import.meta.env.VITE_API_URL;
   useEffect(() => {
     try {
@@ -35,7 +34,7 @@ const MyApplications = () => {
   }, [isAuthorized]);
 
   if (!isAuthorized) {
-    navigateTo("/");
+    return <Navigate to="/login" />;
   }
 
   const deleteApplication = (id) => {

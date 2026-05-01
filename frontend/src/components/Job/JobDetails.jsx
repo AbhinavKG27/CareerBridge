@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../main";
@@ -24,7 +24,7 @@ const JobDetails = () => {
   }, []);
 
   if (!isAuthorized) {
-    navigateTo("/login");
+    return <Navigate to="/login" />;
   }
 
   return (
