@@ -11,11 +11,18 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+
   const API = import.meta.env.VITE_API_URL;
-  const { isAuthorized, setIsAuthorized, refreshUser } = useContext(Context);
+
+  const {
+    isAuthorized,
+    setIsAuthorized,
+    refreshUser,
+  } = useContext(Context);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
       const { data } = await axios.post(
         `${API}/api/v1/user/login`,
@@ -27,70 +34,134 @@ const Login = () => {
           withCredentials: true,
         }
       );
+
       toast.success(data.message);
+
       setEmail("");
       setPassword("");
       setRole("");
+
       await refreshUser();
+
       setIsAuthorized(true);
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Login failed");
+      toast.error(
+        error?.response?.data?.message ||
+          "Login failed"
+      );
     }
   };
 
   if (isAuthorized) {
-    return <Navigate to={"/"} />;
+    return <Navigate to="/" />;
   }
 
   return (
     <section className="authPage">
       <div className="banner">
-        <img src="/login.png" alt="login" />
-      </div>
-      <div className="container">
-        <div className="header">
-          <img src="/JobZeelogo.png" alt="logo" />
-          <h3>Login to your account</h3>
+        <div className="banner-content">
+          <h1>
+            Find your dream career with CareerBridge
+          </h1>
+
+          <p>
+            Connect with companies, apply for jobs,
+            and build your professional future.
+          </p>
+
+          <img src="/login.png" alt="Login" />
         </div>
-        <form onSubmit={handleLogin}>
-          <div className="inputTag">
-            <label>Login As</label>
-            <div>
-              <select value={role} onChange={(e) => setRole(e.target.value)}>
-                <option value="">Select Role</option>
-                <option value="Employer">Employer</option>
-                <option value="Job Seeker">Job Seeker</option>
-              </select>
-              <FaRegUser />
-            </div>
+      </div>
+
+      <div className="auth-container">
+        <div className="auth-card">
+          <div className="header">
+            <img src="/JobZeelogo.png" alt="logo" />
+
+            <h3>Welcome Back</h3>
+
+            <p>
+              Login to continue exploring opportunities.
+            </p>
           </div>
-          <div className="inputTag">
-            <label>Email Address</label>
-            <div>
-              <input
-                type="email"
-                placeholder="example@gmail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <MdOutlineMailOutline />
+
+          <form onSubmit={handleLogin}>
+            <div className="inputTag">
+              <label>Login As</label>
+
+              <div className="inputWrapper">
+                <FaRegUser />
+
+                <select
+                  value={role}
+                  onChange={(e) =>
+                    setRole(e.target.value)
+                  }
+                >
+                  <option value="">
+                    Select Role
+                  </option>
+
+                  <option value="Employer">
+                    Employer
+                  </option>
+
+                  <option value="Job Seeker">
+                    Job Seeker
+                  </option>
+                </select>
+              </div>
             </div>
-          </div>
-          <div className="inputTag">
-            <label>Password</label>
-            <div>
-              <input
-                type="password"
-                placeholder="Your Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <RiLock2Fill />
+
+            <div className="inputTag">
+              <label>Email Address</label>
+
+              <div className="inputWrapper">
+                <MdOutlineMailOutline />
+
+                <input
+                  type="email"
+                  placeholder="example@gmail.com"
+                  value={email}
+                  onChange={(e) =>
+                    setEmail(e.target.value)
+                  }
+                />
+              </div>
             </div>
-          </div>
-          <button type="submit">Login</button>
-          <Link to={"/register"}>Register Now</Link>
-        </form>
+
+            <div className="inputTag">
+              <label>Password</label>
+
+              <div className="inputWrapper">
+                <RiLock2Fill />
+
+                <input
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) =>
+                    setPassword(e.target.value)
+                  }
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="auth-btn"
+            >
+              Login
+            </button>
+
+            <Link
+              to="/register"
+              className="auth-switch"
+            >
+              Don't have an account? Register
+            </Link>
+          </form>
+        </div>
       </div>
     </section>
   );

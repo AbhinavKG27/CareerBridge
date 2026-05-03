@@ -1,42 +1,63 @@
 import React from "react";
+
 import { FaUserPlus } from "react-icons/fa";
 import { MdFindInPage } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
 
 const HowItWorks = () => {
-  return (
-    <>
-      <div className="howitworks">
-        <div className="container">
-          <h3>How CareerBridge Works</h3>
-          <div className="banner">
-            <div className="card">
-              <FaUserPlus />
-              <p>Create Account</p>
-              <p>
-              Sign up for CareerBridge by providing your basic information, such as your name, email address, and a secure password. Completing your profile will help CareerBridge tailor job recommendations and enhance your overall experience on the platform.
-              </p>
-            </div>
-            <div className="card">
-              <MdFindInPage />
-              <p>Find a Job/Post a Job</p>
-              <p>
-              Explore a wide range of job opportunities tailored to your skills and preferences. CareerBridge makes it easy for you to discover the perfect job by using advanced filters and algorithms. If you're an employer, post job listings to attract qualified candidates. Highlight key details about the job, such as responsibilities, qualifications, and benefits, to make your listing stand out.
-              </p>
-            </div>
-            <div className="card">
-              <IoMdSend />
-              <p>Apply For Job/Recruit Suitable Candidates</p>
-              <p>
-              Apply for your dream job with just a few clicks. Customize your application by showcasing your relevant skills and experience. If you're an employer looking to hire, review applications from potential candidates and connect with those who align with your company's needs. CareerBridge streamlines the recruitment process, making it efficient and straightforward for both job seekers and employers.
+  const steps = [
+    {
+      id: 1,
+      icon: <FaUserPlus />,
+      title: "Create Your Account",
+      description:
+        "Sign up and build your professional profile to receive personalized job recommendations and opportunities.",
+    },
+    {
+      id: 2,
+      icon: <MdFindInPage />,
+      title: "Discover Opportunities",
+      description:
+        "Browse thousands of jobs from top companies or post openings to connect with qualified candidates.",
+    },
+    {
+      id: 3,
+      icon: <IoMdSend />,
+      title: "Apply & Connect",
+      description:
+        "Apply seamlessly, manage applications, and connect directly with employers or skilled professionals.",
+    },
+  ];
 
-CareerBridge is your one-stop platform for a seamless job search or recruitment experience. Join today and take the next step toward your career goals!
-              </p>
+  return (
+    <section className="howitworks">
+      <div className="container">
+        <div className="section-header">
+          <h2 className="section-title">
+            How CareerBridge Works
+          </h2>
+
+          <p className="section-subtitle">
+            A simple and efficient workflow for both
+            job seekers and employers.
+          </p>
+        </div>
+
+        <div className="how-grid">
+          {steps.map((step) => (
+            <div className="how-card" key={step.id}>
+              <div className="how-icon">
+                {step.icon}
+              </div>
+
+              <h3>{step.title}</h3>
+
+              <p>{step.description}</p>
             </div>
-          </div>
+          ))}
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

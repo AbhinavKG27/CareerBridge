@@ -1,5 +1,10 @@
 import React from "react";
-import { FaMicrosoft, FaApple } from "react-icons/fa";
+
+import {
+  FaMicrosoft,
+  FaApple,
+} from "react-icons/fa";
+
 import { SiTesla } from "react-icons/si";
 
 const PopularCompanies = () => {
@@ -8,43 +13,64 @@ const PopularCompanies = () => {
       id: 1,
       title: "Microsoft",
       location: "Bengaluru, India",
+      openings: "120 Open Roles",
       icon: <FaMicrosoft />,
     },
     {
       id: 2,
       title: "Tesla",
-      location: "Abu Dabhi, UAE",
+      location: "Abu Dhabi, UAE",
+      openings: "42 Open Roles",
       icon: <SiTesla />,
     },
     {
       id: 3,
       title: "Apple",
       location: "California, USA",
+      openings: "85 Open Roles",
       icon: <FaApple />,
     },
   ];
+
   return (
-    <div className="companies">
+    <section className="companies">
       <div className="container">
-        <h3>TOP COMPANIES</h3>
-        <div className="banner">
-          {companies.map((element) => {
-            return (
-              <div className="card" key={element.id}>
-                <div className="content">
-                  <div className="icon">{element.icon}</div>
-                  <div className="text">
-                    <p>{element.title}</p>
-                    <p>{element.location}</p>
-                  </div>
+        <div className="section-header">
+          <h2 className="section-title">
+            Top Companies
+          </h2>
+
+          <p className="section-subtitle">
+            Connect with leading companies actively
+            hiring talented professionals.
+          </p>
+        </div>
+
+        <div className="companies-grid">
+          {companies.map((company) => (
+            <div
+              className="company-card"
+              key={company.id}
+            >
+              <div className="company-top">
+                <div className="company-icon">
+                  {company.icon}
                 </div>
-                {/* <button>Open Positions {element.openPositions}</button> */}
+
+                <div>
+                  <h3>{company.title}</h3>
+                  <p>{company.location}</p>
+                </div>
               </div>
-            );
-          })}
+
+              <div className="company-footer">
+                <span>{company.openings}</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

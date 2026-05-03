@@ -1,49 +1,101 @@
 import React from "react";
-import { FaBuilding, FaSuitcase, FaUsers, FaUserPlus } from "react-icons/fa";
+import {
+  FaBuilding,
+  FaSuitcase,
+  FaUsers,
+  FaUserPlus,
+} from "react-icons/fa";
+
 import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const details = [
-    { id: 1, title: "12k+", subTitle: "Active Jobs", icon: <FaSuitcase /> },
-    { id: 2, title: "3k+", subTitle: "Hiring Companies", icon: <FaBuilding /> },
-    { id: 3, title: "25k+", subTitle: "Job Seekers", icon: <FaUsers /> },
-    { id: 4, title: "98%", subTitle: "Satisfaction", icon: <FaUserPlus /> },
+    {
+      id: 1,
+      title: "12k+",
+      subTitle: "Active Jobs",
+      icon: <FaSuitcase />,
+    },
+    {
+      id: 2,
+      title: "3k+",
+      subTitle: "Hiring Companies",
+      icon: <FaBuilding />,
+    },
+    {
+      id: 3,
+      title: "25k+",
+      subTitle: "Job Seekers",
+      icon: <FaUsers />,
+    },
+    {
+      id: 4,
+      title: "98%",
+      subTitle: "Success Rate",
+      icon: <FaUserPlus />,
+    },
   ];
 
   return (
-    <div className="heroSection">
-      <div className="container">
-        <div className="title">
-          <h1>Find work that matches your skills and ambition.</h1>
+    <section className="heroSection">
+      <div className="container hero-grid">
+        <div className="hero-content">
+          <span className="hero-badge">
+            Trusted by modern professionals
+          </span>
+
+          <h1>
+            Find meaningful work that matches your
+            ambition.
+          </h1>
+
           <p>
-            CareerBridge connects top talent with modern companies. Discover opportunities,
-            apply in seconds, and take your career to the next level.
+            CareerBridge helps talented professionals
+            connect with growing companies, discover
+            opportunities faster, and build successful
+            careers with confidence.
           </p>
+
           <div className="hero-cta">
-            <Link to="/job/getall" className="cta">
+            <Link
+              to="/job/getall"
+              className="btn btn-primary"
+            >
               Explore Jobs
             </Link>
-            <Link to="/applications/me" className="cta cta-secondary">
+
+            <Link
+              to="/applications/me"
+              className="btn btn-secondary"
+            >
               Track Applications
             </Link>
           </div>
         </div>
-        <div className="image">
-          <img src="/heroS.jpg" alt="Job search hero" />
+
+        <div className="hero-image-wrapper">
+          <img
+            src="/heroS.jpg"
+            alt="CareerBridge Hero"
+          />
         </div>
       </div>
-      <div className="details container">
-        {details.map((element) => (
-          <div className="card" key={element.id}>
-            <div className="icon">{element.icon}</div>
-            <div className="content">
-              <p>{element.title}</p>
-              <p>{element.subTitle}</p>
+
+      <div className="container stats-grid">
+        {details.map((item) => (
+          <div className="stats-card" key={item.id}>
+            <div className="stats-icon">
+              {item.icon}
+            </div>
+
+            <div className="stats-content">
+              <h3>{item.title}</h3>
+              <p>{item.subTitle}</p>
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

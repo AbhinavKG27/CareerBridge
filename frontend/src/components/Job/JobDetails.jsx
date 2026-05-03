@@ -1,15 +1,37 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  Link,
+  Navigate,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+
 import { Context } from "../../main";
+
+import {
+  FaLocationDot,
+  FaMoneyBillWave,
+  FaBriefcase,
+} from "react-icons/fa6";
 
 const JobDetails = () => {
   const { id } = useParams();
+
   const [job, setJob] = useState({});
+
   const navigateTo = useNavigate();
+
   const API = import.meta.env.VITE_API_URL;
-  const { isAuthorized, user } = useContext(Context);
+
+  const { isAuthorized, user } =
+    useContext(Context);
 
   useEffect(() => {
     axios
@@ -29,44 +51,78 @@ const JobDetails = () => {
   }
 
   return (
-    <section className="jobDetail page">
+    <section className="job-details-page page">
       <div className="container">
-        <h3>Job Details</h3>
-        <div className="banner">
-          <p>
-            Title: <span>{job.title}</span>
-          </p>
-          <p>
-            Category: <span>{job.category}</span>
-          </p>
-          <p>
-            Country: <span>{job.country}</span>
-          </p>
-          <p>
-            City: <span>{job.city}</span>
-          </p>
-          <p>
-            Location: <span>{job.location}</span>
-          </p>
-          <p>
-            Description: <span>{job.description}</span>
-          </p>
-          <p>
-            Job Posted On: <span>{job.jobPostedOn}</span>
-          </p>
-          <p>
-            Salary:{" "}
-            {job.fixedSalary ? (
-              <span>{job.fixedSalary}</span>
-            ) : (
-              <span>
-                {job.salaryFrom} - {job.salaryTo}
+        <div className="job-details-card">
+          <div className="job-details-top">
+            <div>
+              <span className="job-category">
+                {job.category}
               </span>
+
+              <h1>{job.title}</h1>
+
+              <div className="job-detail-meta">
+                <span>
+                  <FaLocationDot />
+                  {job.city}, {job.country}
+                </span>
+
+                <span>
+                  <FaBriefcase />
+                  Full Time
+                </span>
+
+                <span>
+                  <FaMoneyBillWave />
+                  {job.fixedSalary
+                    ? `₹${job.fixedSalary}`
+                    : `₹${job.salaryFrom} - ₹${job.salaryTo}`}
+                </span>
+              </div>
+            </div>
+
+            {user?.role !== "Employer" && (
+              <Link
+                to={`/application/${job._id}`}
+                className="apply-btn"
+              >
+                Apply Now
+              </Link>
             )}
-          </p>
-          {user && user.role === "Employer" ? null : (
-            <Link to={`/application/${job._id}`}>Apply Now</Link>
-          )}
+          </div>
+
+          <div className="job-section">
+            <h3>Job Description</h3>
+
+            <p>{job.description}</p>
+          </div>
+
+          <div className="job-info-grid">
+            <div className="info-card">
+              <h4>Location</h4>
+
+              <p>{job.location}</p>
+            </div>
+
+            <div className="info-card">
+              <h4>Posted On</h4>
+
+              <p>{job.jobPostedOn}</p>
+            </div>
+
+            <div className="info-card">
+              <h4>Category</h4>
+
+              <p>{job.category}</p>
+            </div>
+
+            <div className="info-card">
+              <h4>Country</h4>
+
+              <p>{job.country}</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

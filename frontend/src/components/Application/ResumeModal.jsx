@@ -1,13 +1,27 @@
 import React from "react";
 
-const ResumeModal = ({ imageUrl, onClose }) => {
+import {
+  RxCross2,
+} from "react-icons/rx";
+
+const ResumeModal = ({
+  imageUrl,
+  onClose,
+}) => {
   return (
     <div className="resume-modal">
-      <div className="modal-content">
-        <span className="close" onClick={onClose}>
-          &times;
-        </span>
-        <img src={imageUrl} alt="resume" />
+      <div className="resume-modal-content">
+        <button
+          className="resume-close-btn"
+          onClick={onClose}
+        >
+          <RxCross2 />
+        </button>
+
+        <img
+          src={imageUrl}
+          alt="Resume Preview"
+        />
       </div>
     </div>
   );
