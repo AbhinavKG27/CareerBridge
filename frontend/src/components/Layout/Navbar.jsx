@@ -66,14 +66,18 @@ const Navbar = () => {
               </li>
             </>
           )}
-          <button
-            className="theme-toggle"
-            aria-label="Toggle theme"
-            onClick={() => setDarkMode((prev) => !prev)}
-          >
-            {darkMode ? <LuSun /> : <LuMoonStar />}
-          </button>
-          <button onClick={handleLogout}>LOGOUT</button>
+          <li>
+            <button
+              className="theme-toggle"
+              aria-label="Toggle theme"
+              onClick={() => setDarkMode((prev) => !prev)}
+            >
+              {darkMode ? <LuSun /> : <LuMoonStar />}
+            </button>
+          </li>
+          <li>
+            <button onClick={handleLogout}>LOGOUT</button>
+          </li>
         </ul>
         <div className="hamburger" aria-label="Open menu">
           <GiHamburgerMenu onClick={() => setShow(!show)} />
