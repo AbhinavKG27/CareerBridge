@@ -94,3 +94,39 @@ export const jobseekerDeleteApplication = catchAsyncErrors(async (req, res, next
     message: "Application Deleted!",
   });
 });
+
+
+// ✅ NEW FUNCTION (ADDED)
+export const updateApplicationStatus = catchAsyncErrors(async (req, res, next) => {
+  const { role } = req.user;
+
+  if (role === "Job Seeker") {
+    return next(new ErrorHandler("Not authorized.", 403));
+  }
+
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!["Accepted", "Rejected"].includes(status)) {
+    return next(new ErrorHandler("Invalid status", 400));
+  }
+
+  const application = await Application.findById(id);
+
+  if (!application) {
+    return next(new ErrorHandler("Application not found!", 404));
+  }
+
+  if (application.employerID.user.toString() !== req.user._id.toString()) {
+    return next(new ErrorHandler("Unauthorized action.", 403));
+  }
+
+  application.status = status;
+  await application.save();
+
+  res.status(200).json({
+    success: true,
+    message: `Application ${status}`,
+    application,
+  });
+});

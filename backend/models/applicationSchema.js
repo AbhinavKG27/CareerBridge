@@ -49,6 +49,13 @@ const applicationSchema = new mongoose.Schema({
       required: true,
     },
   },
+
+  // ✅ NEW FIELD (ADDED)
+  status: {
+    type: String,
+    enum: ["Pending", "Accepted", "Rejected"],
+    default: "Pending",
+  },
 });
 
 export const Application = mongoose.model("Application", applicationSchema);

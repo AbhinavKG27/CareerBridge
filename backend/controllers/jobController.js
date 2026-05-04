@@ -107,3 +107,54 @@ export const getSingleJob = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({ success: true, job });
 });
+
+import { Application } from "../models/applicationSchema.js";
+import { User } from "../models/userSchema.js";
+
+// ✅ NEW FUNCTION
+export const getPlatformStats = async (req, res) => {
+  try {
+    // total jobs
+    const totalJobs = await Job.countDocuments();
+
+    // unique companies (employers who posted jobs)
+    const companies = await Job.distinct("postedBy");
+    const totalCompanies = companies.length;
+
+    // job seekers count
+    const totalJobSeekers = await User.countDocuments({
+      role: "Job Seeker",
+    });
+
+    // applications
+    const totalApplications = await Application.countDocuments();
+
+    const acceptedApplications = await Application.countDocuments({
+      status: "Accepted",
+    });
+
+    // success rate
+    const successRate =
+      totalApplications === 0
+        ? 0
+        : Math.round(
+            (acceptedApplications / totalApplications) * 100
+          );
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalJobs,
+        totalCompanies,
+        totalJobSeekers,
+        successRate,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch stats",
+    });
+  }
+};

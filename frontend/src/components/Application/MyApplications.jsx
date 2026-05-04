@@ -88,6 +88,32 @@ const MyApplications = () => {
     }
   };
 
+  // ✅ NEW FUNCTION (ADDED ONLY)
+  const updateStatus = async (id, status) => {
+    try {
+      const res = await axios.put(
+        `${API}/api/v1/application/status/${id}`,
+        { status },
+        { withCredentials: true }
+      );
+
+      toast.success(`Application ${status}`);
+
+      setApplications((prev) =>
+        prev.map((app) =>
+          app._id === id
+            ? { ...app, status }
+            : app
+        )
+      );
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to update status"
+      );
+    }
+  };
+
   return (
     <section className="applications-page page">
       <div className="container">
@@ -152,6 +178,31 @@ const MyApplications = () => {
                     </div>
                   </div>
 
+                  {/* ✅ STATUS DISPLAY (ADDED) */}
+                  <div
+                    style={{
+                      marginBottom: "10px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Status:{" "}
+                    <span
+                      style={{
+                        color:
+                          application.status ===
+                          "Accepted"
+                            ? "green"
+                            : application.status ===
+                              "Rejected"
+                            ? "red"
+                            : "#555",
+                      }}
+                    >
+                      {application.status ||
+                        "Pending"}
+                    </span>
+                  </div>
+
                   <div className="application-info">
                     <span>
                       <FaEnvelope />
@@ -199,6 +250,62 @@ const MyApplications = () => {
                     >
                       Delete Application
                     </button>
+                  )}
+
+                  {/* ✅ EMPLOYER ACTION BUTTONS (ADDED) */}
+                  {user?.role ===
+                    "Employer" && (
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "10px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      <button
+                        onClick={() =>
+                          updateStatus(
+                            application._id,
+                            "Accepted"
+                          )
+                        }
+                        style={{
+                          background:
+                            "#16a34a",
+                          color: "#fff",
+                          border: "none",
+                          padding:
+                            "6px 10px",
+                          borderRadius:
+                            "6px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Accept
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          updateStatus(
+                            application._id,
+                            "Rejected"
+                          )
+                        }
+                        style={{
+                          background:
+                            "#dc2626",
+                          color: "#fff",
+                          border: "none",
+                          padding:
+                            "6px 10px",
+                          borderRadius:
+                            "6px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Reject
+                      </button>
+                    </div>
                   )}
                 </div>
               )

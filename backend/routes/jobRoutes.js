@@ -8,9 +8,11 @@ import {
   updateJob,
 } from "../controllers/jobController.js";
 import { isAuthenticated } from "../middlewares/auth.js";
+import { getPlatformStats } from "../controllers/jobController.js";
 
 const router = express.Router();
 
+router.get("/stats", getPlatformStats);
 router.get("/getall", getAllJobs);
 router.get("/getmyjobs", isAuthenticated, getMyJobs);
 router.post("/post", isAuthenticated, postJob);
