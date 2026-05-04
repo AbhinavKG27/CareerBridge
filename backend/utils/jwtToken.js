@@ -3,22 +3,19 @@ export const sendToken = (user, statusCode, res, message) => {
 
   const isProduction = process.env.NODE_ENV === "production";
 
-  const options = {
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "None" : "Lax",
     expires: new Date(
       Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true,
-    secure: isProduction,                 // required for HTTPS
-    sameSite: isProduction ? "None" : "Lax", // allow cross-site in production
-  };
+  });
 
-  res
-    .status(statusCode)
-    .cookie("token", token, options)
-    .json({
-      success: true,
-      user,
-      message,
-      token,
-    });
+  res.status(statusCode).json({
+    success: true,
+    user,
+    message,
+    token,
+  });
 };

@@ -50,6 +50,13 @@ app.get("/", (req, res) => {
   res.send("CareerBridge Backend Running 🚀");
 });
 
+app.set("trust proxy", 1);
+
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+}));
+
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);

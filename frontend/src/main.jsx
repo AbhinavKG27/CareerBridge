@@ -37,9 +37,12 @@ const AppWrapper = () => {
     }
   }, []);
 
-  useEffect(() => {
-    refreshUser();
-  }, [refreshUser]);
+ useEffect(() => {
+  const initAuth = async () => {
+    await refreshUser();
+  };
+  initAuth();
+}, [refreshUser]);
 
   return (
     <Context.Provider
