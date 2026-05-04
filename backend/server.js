@@ -4,10 +4,14 @@ import { config } from "dotenv";
 
 config();
 
-dbConnection();
+dbConnection()
+  .then(() => {
+    const PORT = process.env.PORT || 5000;
 
-const PORT = process.env.PORT || 4000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Database connection failed:", err);
+  });
