@@ -42,6 +42,9 @@ const PostJob = () => {
   const [salaryType, setSalaryType] =
     useState("default");
 
+  // ✅ NEW STATE (ADDED ONLY)
+  const [companyName, setCompanyName] = useState("");
+
   const API = import.meta.env.VITE_API_URL;
 
   const { isAuthorized, user } =
@@ -51,6 +54,11 @@ const PostJob = () => {
 
   const handleJobPost = async (e) => {
     e.preventDefault();
+
+    // ✅ BASIC VALIDATION (ADDED, NON-BREAKING)
+    if (!companyName) {
+      return toast.error("Company name is required");
+    }
 
     try {
       const payload =
@@ -62,6 +70,7 @@ const PostJob = () => {
               country,
               city,
               location,
+              companyName, // ✅ ADDED
               fixedSalary,
             }
           : {
@@ -71,6 +80,7 @@ const PostJob = () => {
               country,
               city,
               location,
+              companyName, // ✅ ADDED
               salaryFrom,
               salaryTo,
             };
@@ -130,6 +140,20 @@ const PostJob = () => {
             <h3>Basic Information</h3>
 
             <div className="dashboard-grid">
+
+              {/* ✅ NEW FIELD (ADDED ONLY) */}
+              <div className="field">
+                <label>Company Name</label>
+                <input
+                  type="text"
+                  placeholder="Google, Microsoft..."
+                  value={companyName}
+                  onChange={(e) =>
+                    setCompanyName(e.target.value)
+                  }
+                />
+              </div>
+
               <div className="field">
                 <label>Job Title</label>
 

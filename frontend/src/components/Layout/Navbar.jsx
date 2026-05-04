@@ -13,6 +13,8 @@ const Navbar = () => {
     localStorage.getItem("theme") === "dark"
   );
 
+  const [profileOpen, setProfileOpen] = useState(false);
+
   const { isAuthorized, setIsAuthorized, setUser, user } =
     useContext(Context);
 
@@ -20,14 +22,27 @@ const Navbar = () => {
   const API = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-  if (darkMode) {
-    document.body.classList.add("dark");
-    localStorage.setItem("theme", "dark");
-  } else {
-    document.body.classList.remove("dark");
-    localStorage.setItem("theme", "light");
-  }
-}, [darkMode]);
+    if (darkMode) {
+      document.body.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
+
+  // ✅ close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest(".profile-menu")) {
+        setProfileOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () =>
+      document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   const closeMenu = () => setShow(false);
 
@@ -117,13 +132,32 @@ const Navbar = () => {
             </button>
           </li>
 
-          <li>
+          {/* ✅ PROFILE DROPDOWN (replaces logout button) */}
+          <li className="profile-menu">
             <button
-              className="logout-btn"
-              onClick={handleLogout}
+              className="profile-btn"
+              onClick={() =>
+                setProfileOpen((prev) => !prev)
+              }
             >
-              Logout
+              👤 {user?.name?.split(" ")[0] || "Profile"}
             </button>
+
+            {profileOpen && (
+              <div className="profile-dropdown">
+                <p><strong>{user?.name}</strong></p>
+                <p className="role">{user?.role}</p>
+
+                <hr />
+
+                <button
+                  onClick={handleLogout}
+                  className="logout-dropdown"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </li>
         </ul>
 
