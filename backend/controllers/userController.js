@@ -43,13 +43,20 @@ export const login = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const logout = catchAsyncErrors(async (req, res) => {
-  res.status(200).cookie("token", "", {
-    httpOnly: true,
-    expires: new Date(Date.now()),
-  }).json({
-    success: true,
-    message: "Logged Out Successfully.",
-  });
+  const isProduction = process.env.NODE_ENV === "production";
+
+  res
+    .status(200)
+    .cookie("token", "", {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Lax",
+      expires: new Date(Date.now()),
+    })
+    .json({
+      success: true,
+      message: "Logged Out Successfully.",
+    });
 });
 
 export const getUser = catchAsyncErrors((req, res) => {
