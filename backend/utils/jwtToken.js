@@ -1,21 +1,19 @@
+// backend/utils/jwtToken.js
 export const sendToken = (user, statusCode, res, message) => {
   const token = user.getJWTToken();
 
-  const isProduction = process.env.NODE_ENV === "production";
-
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "None" : "Lax",
+  const options = {
     expires: new Date(
-      Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+      Date.now() + Number(process.env.COOKIE_EXPIRE || 7) * 24 * 60 * 60 * 1000
     ),
-  });
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  };
 
-  res.status(statusCode).json({
+  return res.status(statusCode).cookie("token", token, options).json({
     success: true,
     user,
     message,
-    token,
   });
 };

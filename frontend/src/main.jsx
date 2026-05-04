@@ -1,18 +1,15 @@
+// frontend/src/main.jsx
 import { createContext, useCallback, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import axios from "axios";
+import api from "./utils/axios";
 
-// ================= AXIOS GLOBAL CONFIG =================
-const API = import.meta.env.VITE_API_URL;
-
-axios.defaults.baseURL = API;
-axios.defaults.withCredentials = true;
-
-// ================= CONTEXT =================
 export const Context = createContext({
   isAuthorized: false,
+  setIsAuthorized: () => {},
   user: null,
+  setUser: () => {},
+  authReady: false,
   refreshUser: async () => {},
 });
 
@@ -23,12 +20,11 @@ const AppWrapper = () => {
 
   const refreshUser = useCallback(async () => {
     try {
-      const response = await axios.get("/api/v1/user/getuser");
-      setUser(response.data.user);
+      const { data } = await api.get("/api/v1/user/getuser");
+      setUser(data.user);
       setIsAuthorized(true);
-      return response.data.user;
-    } catch (err) {
-      console.log("Auth check failed:", err?.response?.data || err.message);
+      return data.user;
+    } catch {
       setUser(null);
       setIsAuthorized(false);
       return null;
@@ -37,12 +33,9 @@ const AppWrapper = () => {
     }
   }, []);
 
- useEffect(() => {
-  const initAuth = async () => {
-    await refreshUser();
-  };
-  initAuth();
-}, [refreshUser]);
+  useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
 
   return (
     <Context.Provider

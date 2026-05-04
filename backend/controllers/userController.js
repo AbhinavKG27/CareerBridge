@@ -1,3 +1,4 @@
+// backend/controllers/userController.js
 import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
 import { User } from "../models/userSchema.js";
 import ErrorHandler from "../middlewares/error.js";
@@ -43,14 +44,12 @@ export const login = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const logout = catchAsyncErrors(async (req, res) => {
-  const isProduction = process.env.NODE_ENV === "production";
-
   res
     .status(200)
     .cookie("token", "", {
       httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "None" : "Lax",
+      secure: true,
+      sameSite: "None",
       expires: new Date(Date.now()),
     })
     .json({

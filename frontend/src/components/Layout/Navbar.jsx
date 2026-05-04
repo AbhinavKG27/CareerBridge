@@ -1,7 +1,8 @@
+// frontend/src/components/Layout/Navbar.jsx
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../main";
 import { Link, useNavigate, NavLink } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/axios";
 import toast from "react-hot-toast";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
@@ -9,17 +10,11 @@ import { LuMoonStar, LuSun } from "react-icons/lu";
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("theme") === "dark"
-  );
-
+  const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") === "dark");
   const [profileOpen, setProfileOpen] = useState(false);
 
-  const { isAuthorized, setIsAuthorized, setUser, user } =
-    useContext(Context);
-
+  const { isAuthorized, setIsAuthorized, setUser, user } = useContext(Context);
   const navigateTo = useNavigate();
-  const API = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     if (darkMode) {
@@ -31,7 +26,6 @@ const Navbar = () => {
     }
   }, [darkMode]);
 
-  // ✅ close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!e.target.closest(".profile-menu")) {
@@ -40,32 +34,20 @@ const Navbar = () => {
     };
 
     document.addEventListener("click", handleClickOutside);
-    return () =>
-      document.removeEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   const closeMenu = () => setShow(false);
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get(
-        `${API}/api/v1/user/logout`,
-        {
-          withCredentials: true,
-        }
-      );
-
+      const response = await api.get("/api/v1/user/logout");
       toast.success(response.data.message);
-
       setIsAuthorized(false);
       setUser(null);
-
       navigateTo("/login");
     } catch (error) {
-      toast.error(
-        error?.response?.data?.message || "Logout failed"
-      );
-
+      toast.error(error?.response?.data?.message || "Logout failed");
       setIsAuthorized(true);
     }
   };
@@ -74,21 +56,12 @@ const Navbar = () => {
     <nav className={isAuthorized ? "navbarShow" : "navbarHide"}>
       <div className="container navbar-container">
         <Link to="/" className="logo" onClick={closeMenu}>
-          <img
-            src="/JobZee-logos__white.png"
-            alt="CareerBridge logo"
-          />
+          <img src="/JobZee-logos__white.png" alt="CareerBridge logo" />
         </Link>
 
         <ul className={show ? "menu show-menu" : "menu"}>
           <li>
-            <NavLink
-              to="/"
-              onClick={closeMenu}
-              className={({ isActive }) =>
-                isActive ? "active-link" : ""
-              }
-            >
+            <NavLink to="/" onClick={closeMenu} className={({ isActive }) => (isActive ? "active-link" : "")}>
               Home
             </NavLink>
           </li>
@@ -97,9 +70,8 @@ const Navbar = () => {
             <NavLink
               to="/job/getall"
               onClick={closeMenu}
-              className={({ isActive }) =>
-              isActive ? "active-link" : ""
-            }>
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
               Jobs
             </NavLink>
           </li>
@@ -108,13 +80,9 @@ const Navbar = () => {
             <NavLink
               to="/applications/me"
               onClick={closeMenu}
-              className={({ isActive }) =>
-                isActive ? "active-link" : ""
-              }
+              className={({ isActive }) => (isActive ? "active-link" : "")}
             >
-              {user?.role === "Employer"
-                ? "Applicants"
-                : "My Applications"}
+              {user?.role === "Employer" ? "Applicants" : "My Applications"}
             </NavLink>
           </li>
 
@@ -124,22 +92,14 @@ const Navbar = () => {
                 <NavLink
                   to="/job/post"
                   onClick={closeMenu}
-                  className={({ isActive }) =>
-                    isActive ? "active-link" : ""
-                  }
+                  className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
                   Post Job
                 </NavLink>
               </li>
 
               <li>
-                <NavLink
-                  to="/job/me"
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    isActive ? "active-link" : ""
-                  }
-                >
+                <NavLink to="/job/me" onClick={closeMenu} className={({ isActive }) => (isActive ? "active-link" : "")}>
                   My Jobs
                 </NavLink>
               </li>
@@ -150,36 +110,25 @@ const Navbar = () => {
             <button
               className="theme-toggle"
               aria-label="Toggle theme"
-              onClick={() =>
-                setDarkMode((prev) => !prev)
-              }
+              onClick={() => setDarkMode((prev) => !prev)}
             >
               {darkMode ? <LuSun /> : <LuMoonStar />}
             </button>
           </li>
 
-          {/* ✅ PROFILE DROPDOWN (replaces logout button) */}
           <li className="profile-menu">
-            <button
-              className="profile-btn"
-              onClick={() =>
-                setProfileOpen((prev) => !prev)
-              }
-            >
+            <button className="profile-btn" onClick={() => setProfileOpen((prev) => !prev)}>
               👤 {user?.name?.split(" ")[0] || "Profile"}
             </button>
 
             {profileOpen && (
               <div className="profile-dropdown">
-                <p><strong>{user?.name}</strong></p>
+                <p>
+                  <strong>{user?.name}</strong>
+                </p>
                 <p className="role">{user?.role}</p>
-
                 <hr />
-
-                <button
-                  onClick={handleLogout}
-                  className="logout-dropdown"
-                >
+                <button onClick={handleLogout} className="logout-dropdown">
                   Logout
                 </button>
               </div>
