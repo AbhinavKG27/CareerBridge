@@ -6,6 +6,10 @@ import { FaRegUser } from "react-icons/fa";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Context } from "../../main";
+import {
+  validateEmail,
+  validatePassword,
+} from "../../utils/validation";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,36 +25,71 @@ const Login = () => {
   } = useContext(Context);
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const { data } = await axios.post(
-        `${API}/api/v1/user/login`,
-        { email, password, role },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+  if (!role) {
+    return toast.error(
+      "Please select your role"
+    );
+  }
 
-      toast.success(data.message);
+  if (!email.trim()) {
+    return toast.error(
+      "Email address is required"
+    );
+  }
 
-      setEmail("");
-      setPassword("");
-      setRole("");
+  if (!validateEmail(email)) {
+    return toast.error(
+      "Please enter a valid email address"
+    );
+  }
 
-      await refreshUser();
+  if (!password.trim()) {
+    return toast.error(
+      "Password is required"
+    );
+  }
 
-      setIsAuthorized(true);
-    } catch (error) {
-      toast.error(
-        error?.response?.data?.message ||
-          "Login failed"
-      );
-    }
-  };
+  if (!validatePassword(password)) {
+    return toast.error(
+      "Password must contain at least 8 characters"
+    );
+  }
+
+  try {
+    const { data } = await axios.post(
+      `${API}/api/v1/user/login`,
+      {
+        email,
+        password,
+        role,
+      },
+      {
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    toast.success(data.message);
+
+    setEmail("");
+    setPassword("");
+    setRole("");
+
+    await refreshUser();
+
+    setIsAuthorized(true);
+  } catch (error) {
+    toast.error(
+      error?.response?.data?.message ||
+        "Login failed"
+    );
+  }
+};
 
   if (isAuthorized) {
     return <Navigate to="/" />;

@@ -8,6 +8,12 @@ import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Context } from "../../main";
+import {
+  validateEmail,
+  validatePassword,
+  validatePhone,
+  validateRequired,
+} from "../../utils/validation";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -25,45 +31,69 @@ const Register = () => {
   } = useContext(Context);
 
   const handleRegister = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const { data } = await axios.post(
-        `${API}/api/v1/user/register`,
-        {
-          name,
-          phone,
-          email,
-          role,
-          password,
-        },
-        {
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+  if (!validateRequired(role)) {
+    return toast.error("Please select your role");
+  }
 
-      toast.success(data.message);
+  if (!validateRequired(name)) {
+    return toast.error("Name is required");
+  }
 
-      setName("");
-      setEmail("");
-      setPassword("");
-      setPhone("");
-      setRole("");
+  if (name.length < 3) {
+    return toast.error("Name must be at least 3 characters");
+  }
 
-      await refreshUser();
+  if (!validateRequired(phone)) {
+    return toast.error("Phone number is required");
+  }
 
-      setIsAuthorized(true);
-    } catch (error) {
-      toast.error(
-        error?.response?.data?.message ||
-          "Registration failed"
-      );
-    }
-  };
+  if (!validatePhone(phone)) {
+    return toast.error("Phone number must be 10 digits");
+  }
+
+  if (!validateRequired(email)) {
+    return toast.error("Email is required");
+  }
+
+  if (!validateEmail(email)) {
+    return toast.error("Enter a valid email address");
+  }
+
+  if (!validateRequired(password)) {
+    return toast.error("Password is required");
+  }
+
+  if (!validatePassword(password)) {
+    return toast.error("Password must be at least 8 characters");
+  }
+
+  try {
+    const { data } = await axios.post(
+      `${API}/api/v1/user/register`,
+      { name, phone, email, role, password },
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+
+    toast.success(data.message);
+
+    setName("");
+    setEmail("");
+    setPassword("");
+    setPhone("");
+    setRole("");
+
+    await refreshUser();
+    setIsAuthorized(true);
+
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "Registration failed");
+  }
+};
 
   if (isAuthorized) {
     return <Navigate to="/" />;
