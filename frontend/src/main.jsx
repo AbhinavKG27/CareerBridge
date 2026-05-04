@@ -3,6 +3,7 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import api from "./utils/axios";
+import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
