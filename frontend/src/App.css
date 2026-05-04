@@ -2141,3 +2141,25 @@ body.dark .menu{
   width: 100%;
   overflow: hidden;
 }
+
+.menu a {
+  color: var(--text);
+  transition: 0.3s;
+}
+
+.active-link {
+  color: #6366f1; /* highlight color */
+  font-weight: 600;
+  position: relative;
+}
+
+.active-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 2px;
+  background: #6366f1;
+  border-radius: 2px;
+}

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../main";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -82,40 +82,66 @@ const Navbar = () => {
 
         <ul className={show ? "menu show-menu" : "menu"}>
           <li>
-            <Link to="/" onClick={closeMenu}>
+            <NavLink
+              to="/"
+              onClick={closeMenu}
+              className={({ isActive }) =>
+                isActive ? "active-link" : ""
+              }
+            >
               Home
-            </Link>
+            </NavLink>
           </li>
 
           <li>
-            <Link to="/job/getall" onClick={closeMenu}>
+            <NavLink
+              to="/job/getall"
+              onClick={closeMenu}
+              className={({ isActive }) =>
+              isActive ? "active-link" : ""
+            }>
               Jobs
-            </Link>
+            </NavLink>
           </li>
 
           <li>
-            <Link
+            <NavLink
               to="/applications/me"
               onClick={closeMenu}
+              className={({ isActive }) =>
+                isActive ? "active-link" : ""
+              }
             >
               {user?.role === "Employer"
                 ? "Applicants"
                 : "My Applications"}
-            </Link>
+            </NavLink>
           </li>
 
           {user?.role === "Employer" && (
             <>
               <li>
-                <Link to="/job/post" onClick={closeMenu}>
+                <NavLink
+                  to="/job/post"
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    isActive ? "active-link" : ""
+                  }
+                >
                   Post Job
-                </Link>
+                </NavLink>
               </li>
 
               <li>
-                <Link to="/job/me" onClick={closeMenu}>
+                <NavLink
+                  to="/job/me"
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    isActive ? "active-link" : ""
+                  }
+                >
                   My Jobs
-                </Link>
+                </NavLink>
               </li>
             </>
           )}
