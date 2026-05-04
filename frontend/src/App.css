@@ -2117,3 +2117,27 @@ body.dark .menu{
   border-radius: 8px;
   cursor: pointer;
 }
+
+.cover-letter-box p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-height: 150px;   /* control height */
+  overflow-y: auto;    /* scroll if long */
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.cover-letter-box p {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;  /* show 5 lines only */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.cover-letter-box {
+  width: 100%;
+  overflow: hidden;
+}

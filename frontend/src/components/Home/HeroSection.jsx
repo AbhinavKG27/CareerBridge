@@ -9,6 +9,9 @@ import {
   FaUserPlus,
 } from "react-icons/fa";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import { Link } from "react-router-dom";
 
 import { Context } from "../../main";
@@ -20,32 +23,56 @@ const HeroSection = () => {
   const isEmployer =
     user?.role === "Employer";
 
+  const [stats, setStats] = useState({
+    totalJobs: 0,
+    totalCompanies: 0,
+    totalJobSeekers: 0,
+    successRate: 0,
+  });
+
+  const API = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await axios.get(
+          `${API}/api/v1/job/stats`
+        );
+        setStats(res.data.stats);
+      } catch (err) {
+        console.log("Stats error:", err);
+      }
+    };
+
+    fetchStats();
+  }, [API]);
+
   const details = isEmployer
     ? [
         {
           id: 1,
-          title: "3k+",
+          title: `${stats.totalCompanies}+`,
           subTitle:
             "Active Recruiters",
           icon: <FaBuilding />,
         },
         {
           id: 2,
-          title: "12k+",
+          title: `${stats.totalJobs}+`,
           subTitle:
             "Open Positions",
           icon: <FaSuitcase />,
         },
         {
           id: 3,
-          title: "25k+",
+          title: `${stats.totalJobSeekers}+`,
           subTitle:
             "Candidates",
           icon: <FaUsers />,
         },
         {
           id: 4,
-          title: "98%",
+          title: `${stats.successRate}%`,
           subTitle:
             "Hiring Success",
           icon: <FaUserPlus />,
@@ -54,28 +81,28 @@ const HeroSection = () => {
     : [
         {
           id: 1,
-          title: "12k+",
+          title: `${stats.totalJobs}+`,
           subTitle:
             "Active Jobs",
           icon: <FaSuitcase />,
         },
         {
           id: 2,
-          title: "3k+",
+          title: `${stats.totalCompanies}+`,
           subTitle:
             "Hiring Companies",
           icon: <FaBuilding />,
         },
         {
           id: 3,
-          title: "25k+",
+          title: `${stats.totalJobSeekers}+`,
           subTitle:
             "Job Seekers",
           icon: <FaUsers />,
         },
         {
           id: 4,
-          title: "98%",
+          title: `${stats.successRate}%`,
           subTitle:
             "Success Rate",
           icon: <FaUserPlus />,
