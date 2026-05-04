@@ -4,6 +4,8 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import api from "./utils/axios";
 
+axios.defaults.withCredentials = true;
+
 export const Context = createContext({
   isAuthorized: false,
   setIsAuthorized: () => {},

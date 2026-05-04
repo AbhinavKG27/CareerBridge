@@ -1,17 +1,15 @@
-// backend/utils/jwtToken.js
 export const sendToken = (user, statusCode, res, message) => {
   const token = user.getJWTToken();
 
-  const options = {
-    expires: new Date(
-      Date.now() + Number(process.env.COOKIE_EXPIRE || 7) * 24 * 60 * 60 * 1000
-    ),
+  res.cookie("token", token, {
     httpOnly: true,
     secure: true,
     sameSite: "None",
-  };
+    path: "/",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
 
-  return res.status(statusCode).cookie("token", token, options).json({
+  res.status(statusCode).json({
     success: true,
     user,
     message,

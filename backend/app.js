@@ -12,6 +12,8 @@ import fileUpload from "express-fileupload";
 const app = express();
 config();
 
+app.set("trust proxy", 1);
+
 /* ===================== CORS CONFIG ===================== */
 const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173"].filter(Boolean);
 
