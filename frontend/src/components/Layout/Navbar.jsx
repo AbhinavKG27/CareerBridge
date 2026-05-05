@@ -53,7 +53,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={isAuthorized ? "navbarShow" : "navbarHide"}>
+    <nav className={isAuthorized ? "navbarShow navbar-animated" : "navbarHide"}>
       <div className="container navbar-container">
         <Link to="/" className="logo" onClick={closeMenu}>
           <img src="/JobZee-logos__white.png" alt="CareerBridge logo" />
@@ -61,7 +61,13 @@ const Navbar = () => {
 
         <ul className={show ? "menu show-menu" : "menu"}>
           <li>
-            <NavLink to="/" onClick={closeMenu} className={({ isActive }) => (isActive ? "active-link" : "")}>
+            <NavLink
+              to="/"
+              onClick={closeMenu}
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active-link" : ""}`
+              }
+            >
               Home
             </NavLink>
           </li>
@@ -70,7 +76,9 @@ const Navbar = () => {
             <NavLink
               to="/job/getall"
               onClick={closeMenu}
-              className={({ isActive }) => (isActive ? "active-link" : "")}
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active-link" : ""}`
+              }
             >
               Jobs
             </NavLink>
@@ -80,7 +88,9 @@ const Navbar = () => {
             <NavLink
               to="/applications/me"
               onClick={closeMenu}
-              className={({ isActive }) => (isActive ? "active-link" : "")}
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active-link" : ""}`
+              }
             >
               {user?.role === "Employer" ? "Applicants" : "My Applications"}
             </NavLink>
@@ -92,14 +102,22 @@ const Navbar = () => {
                 <NavLink
                   to="/job/post"
                   onClick={closeMenu}
-                  className={({ isActive }) => (isActive ? "active-link" : "")}
+                  className={({ isActive }) =>
+                    `nav-link ${isActive ? "active-link" : ""}`
+                  }
                 >
                   Post Job
                 </NavLink>
               </li>
 
               <li>
-                <NavLink to="/job/me" onClick={closeMenu} className={({ isActive }) => (isActive ? "active-link" : "")}>
+                <NavLink
+                  to="/job/me"
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    `nav-link ${isActive ? "active-link" : ""}`
+                  }
+                >
                   My Jobs
                 </NavLink>
               </li>
@@ -117,7 +135,10 @@ const Navbar = () => {
           </li>
 
           <li className="profile-menu">
-            <button className="profile-btn" onClick={() => setProfileOpen((prev) => !prev)}>
+            <button
+              className="profile-btn"
+              onClick={() => setProfileOpen((prev) => !prev)}
+            >
               👤 {user?.name?.split(" ")[0] || "Profile"}
             </button>
 

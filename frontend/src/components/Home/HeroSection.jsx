@@ -32,6 +32,81 @@ const HeroSection = () => {
 
   const API = import.meta.env.VITE_API_URL;
 
+  // ✅ TYPING ANIMATION STATES (ADDED)
+  const texts =
+    user?.role === "Employer"
+      ? [
+          "Hire top talent faster",
+          "Build your dream team",
+          "Find the best candidates",
+        ]
+      : [
+          "Find meaningful work",
+          "Get your dream job",
+          "Grow your career faster",
+        ];
+
+  const [displayText, setDisplayText] =
+    useState("");
+  const [textIndex, setTextIndex] =
+    useState(0);
+  const [charIndex, setCharIndex] =
+    useState(0);
+  const [isDeleting, setIsDeleting] =
+    useState(false);
+
+  useEffect(() => {
+    const currentText = texts[textIndex];
+
+    const typingSpeed = isDeleting ? 40 : 80;
+
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        setDisplayText(
+          currentText.substring(
+            0,
+            charIndex + 1
+          )
+        );
+        setCharIndex((prev) => prev + 1);
+
+        if (
+          charIndex + 1 ===
+          currentText.length
+        ) {
+          setTimeout(
+            () => setIsDeleting(true),
+            1200
+          );
+        }
+      } else {
+        setDisplayText(
+          currentText.substring(
+            0,
+            charIndex - 1
+          )
+        );
+        setCharIndex((prev) => prev - 1);
+
+        if (charIndex === 0) {
+          setIsDeleting(false);
+          setTextIndex(
+            (prev) =>
+              (prev + 1) %
+              texts.length
+          );
+        }
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(timeout);
+  }, [
+    charIndex,
+    isDeleting,
+    textIndex,
+    texts,
+  ]);
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -40,7 +115,10 @@ const HeroSection = () => {
         );
         setStats(res.data.stats);
       } catch (err) {
-        console.log("Stats error:", err);
+        console.log(
+          "Stats error:",
+          err
+        );
       }
     };
 
@@ -119,13 +197,15 @@ const HeroSection = () => {
               : "Trusted by modern professionals"}
           </span>
 
-          <h1>
-            {isEmployer
-              ? "Hire top talent faster and build your dream team."
-              : "Find meaningful work that matches your ambition."}
+          {/* ✅ TYPING HEADING (ENHANCED) */}
+          <h1 className="hero-heading">
+            {displayText}
+            <span className="typing-cursor">
+              |
+            </span>
           </h1>
 
-          <p>
+          <p className="hero-subtext">
             {isEmployer
               ? "Post opportunities, manage applications, and connect with skilled professionals through a modern recruitment platform."
               : "CareerBridge helps talented professionals connect with growing companies, discover opportunities faster, and build successful careers with confidence."}
@@ -136,14 +216,14 @@ const HeroSection = () => {
               <>
                 <Link
                   to="/job/post"
-                  className="btn btn-primary"
+                  className="btn btn-primary hero-btn"
                 >
                   Post a Job
                 </Link>
 
                 <Link
                   to="/applications/me"
-                  className="btn btn-secondary"
+                  className="btn btn-secondary hero-btn"
                 >
                   View Applicants
                 </Link>
@@ -152,14 +232,14 @@ const HeroSection = () => {
               <>
                 <Link
                   to="/job/getall"
-                  className="btn btn-primary"
+                  className="btn btn-primary hero-btn"
                 >
                   Explore Jobs
                 </Link>
 
                 <Link
                   to="/applications/me"
-                  className="btn btn-secondary"
+                  className="btn btn-secondary hero-btn"
                 >
                   Track Applications
                 </Link>
@@ -168,7 +248,8 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <div className="hero-image-wrapper">
+        {/* ✅ IMAGE ANIMATION */}
+        <div className="hero-image-wrapper animated-image">
           <img
             src="/heroS.jpg"
             alt="CareerBridge Hero"
@@ -179,7 +260,7 @@ const HeroSection = () => {
       <div className="container stats-grid">
         {details.map((item) => (
           <div
-            className="stats-card"
+            className="stats-card hover-card"
             key={item.id}
           >
             <div className="stats-icon">
