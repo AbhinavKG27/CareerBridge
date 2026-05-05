@@ -16,6 +16,17 @@ const Navbar = () => {
   const { isAuthorized, setIsAuthorized, setUser, user } = useContext(Context);
   const navigateTo = useNavigate();
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     if (darkMode) {
       document.body.classList.add("dark");
@@ -53,7 +64,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={isAuthorized ? "navbarShow navbar-animated" : "navbarHide"}>
+    <nav
+      className={
+        isAuthorized
+          ? `navbarShow navbar-animated ${scrolled ? "scrolled" : ""}`
+          : "navbarHide"
+      }
+    >
       <div className="container navbar-container">
         <Link to="/" className="logo" onClick={closeMenu}>
           <img src="/JobZee-logos__white.png" alt="CareerBridge logo" />

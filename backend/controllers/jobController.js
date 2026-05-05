@@ -158,3 +158,45 @@ export const getPlatformStats = async (req, res) => {
     });
   }
 };
+
+// ✅ NEW FUNCTION (ADDED)
+export const getCompanyStats = catchAsyncErrors(async (req, res, next) => {
+  const stats = await Job.aggregate([
+    {
+      $match: {
+        company: { $ne: null }
+      }
+    },
+    {
+      $group: {
+        _id: {
+          company: "$company",
+          city: "$city",
+          country: "$country"
+        },
+        openRoles: { $sum: 1 }
+      }
+    },
+    {
+      $sort: { openRoles: -1 } // ✅ SORT DESC
+    },
+    {
+      $limit: 3 // ✅ ONLY TOP 3
+    },
+    {
+      $project: {
+        _id: 0,
+        company: "$_id.company",
+        location: {
+          $concat: ["$_id.city", ", ", "$_id.country"]
+        },
+        openRoles: 1
+      }
+    }
+  ]);
+
+  res.status(200).json({
+    success: true,
+    companies: stats
+  });
+});

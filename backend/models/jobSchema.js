@@ -17,6 +17,13 @@ const jobSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide a category."],
   },
+
+  // ✅ NEW FIELD ADDED (NO REMOVAL)
+  company: {
+    type: String,
+    required: [true, "Please provide company name."],
+  },
+
   country: {
     type: String,
     required: [true, "Please provide a country name."],

@@ -8,10 +8,7 @@ import {
   FaLinkedin,
   FaGithub,
 } from "react-icons/fa";
-
-import {
-  RiInstagramFill,
-} from "react-icons/ri";
+import { RiMailFill } from "react-icons/ri";
 
 const Footer = () => {
   const { isAuthorized } =
@@ -21,8 +18,8 @@ const Footer = () => {
     <footer
       className={
         isAuthorized
-          ? "footerShow"
-          : "footerHide"
+          ? "footer footerShow"
+          : "footer footerHide"
       }
     >
       <div className="container footer-container">
@@ -37,18 +34,31 @@ const Footer = () => {
 
         <div className="footer-right">
           <div className="socials">
-            <Link to={"#"}>
-              <FaLinkedin />
-            </Link>
 
-            <Link to={"#"}>
-              <RiInstagramFill />
-            </Link>
+  {/* LinkedIn */}
+  <a
+    href="https://www.linkedin.com/in/abhinavkg2004"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <FaLinkedin />
+  </a>
 
-            <Link to={"#"}>
-              <FaGithub />
-            </Link>
-          </div>
+  {/* Email */}
+  <a href="mailto:abhinavkg2004@gmail.com">
+    <RiMailFill />
+  </a>
+
+  {/* GitHub */}
+  <a
+    href="https://github.com/AbhinavKG27"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <FaGithub />
+  </a>
+
+</div>
 
           <span>
             © 2026 CareerBridge. All

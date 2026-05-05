@@ -21,10 +21,13 @@ const names = [
   "Sanjay", "Priya", "Rohit", "Kavya", "Manoj",
 ];
 
-const companies = [
-  "TechNova", "CodeCraft", "InnoSoft",
-  "AI Labs", "NextGen Systems",
-  "CloudCore", "DevSphere", "DataWorks",
+// 🔥 Companies
+const maangCompanies = [
+  "Google", "Amazon", "Apple", "Netflix", "Meta",
+];
+
+const serviceCompanies = [
+  "TCS", "Infosys", "Cognizant", "Accenture", "Wipro",
 ];
 
 const categories = [
@@ -50,72 +53,75 @@ const jobTitles = [
 ];
 
 const run = async () => {
-  console.log("⚠️ Clearing old data...");
-  await User.deleteMany();
-  await Job.deleteMany();
+  console.log("⚠️ NOT deleting old data (safe mode)");
 
-  const users = [];
+  // ✅ Ensure at least some employers exist
+  let employers = await User.find({ role: "Employer" });
 
-  console.log("👤 Creating Users...");
+  if (employers.length === 0) {
+    console.log("⚠️ No employers found, creating some...");
 
-  for (let i = 0; i < 25; i++) {
-    const isEmployer = i < 10;
+    const users = [];
 
-    const user = await User.create({
-      name: isEmployer
-        ? randomItem(companies)
-        : randomItem(names),
+    for (let i = 0; i < 10; i++) {
+      const user = await User.create({
+        name: randomItem(maangCompanies.concat(serviceCompanies)),
+        email: `employer${i}@test.com`,
+        password: "password123",
+        phone: randomPhone(),
+        role: "Employer",
+      });
 
-      email: `user${i}@test.com`,
+      users.push(user);
+    }
 
-      password: "password123", // ✅ valid (>=8, <=32)
-
-      phone: randomPhone(), // ✅ 10-digit string
-
-      role: isEmployer ? "Employer" : "Job Seeker",
-    });
-
-    users.push(user);
+    employers = users;
   }
 
-  const employers = users.filter(
-    (u) => u.role === "Employer"
-  );
-
-  console.log("💼 Creating Jobs...");
+  console.log("💼 Adding Jobs (without deleting existing)...");
 
   const jobs = [];
 
-  for (let i = 0; i < 50; i++) {
+  // 🔥 MAANG (20 jobs)
+  for (let i = 0; i < 20; i++) {
     const employer = randomItem(employers);
+    const company = randomItem(maangCompanies);
 
     jobs.push({
       title: randomItem(jobTitles),
-
       category: randomItem(categories),
-
+      company,
       country: "India",
-
       city: randomItem(cities),
-
-      location: "Koramangala, Bangalore", // ✅ >10 chars
-
+      location: "Koramangala, Bangalore",
       description:
-        "We are hiring talented developers to build scalable and modern applications.", // ✅ >20 chars
+        "We are hiring talented developers to build scalable and modern applications.",
+      postedBy: employer._id,
+    });
+  }
 
+  // 🔥 SERVICE (15 jobs)
+  for (let i = 0; i < 15; i++) {
+    const employer = randomItem(employers);
+    const company = randomItem(serviceCompanies);
+
+    jobs.push({
+      title: randomItem(jobTitles),
+      category: randomItem(categories),
+      company,
+      country: "India",
+      city: randomItem(cities),
+      location: "Electronic City, Bangalore",
+      description:
+        "Join our team to work on enterprise-level scalable systems.",
       postedBy: employer._id,
     });
   }
 
   await Job.insertMany(jobs);
 
-  console.log("🔥 Seeding Completed!");
-  console.log("Users:", users.length);
-  console.log("Jobs:", jobs.length);
-
-  console.log("\n🔐 TEST LOGIN:");
-  console.log("Email: user1@test.com");
-  console.log("Password: password123");
+  console.log("🔥 New Jobs Added!");
+  console.log("Added Jobs:", jobs.length);
 
   process.exit();
 };
