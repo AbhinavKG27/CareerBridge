@@ -173,7 +173,7 @@ const MyApplications = () => {
                       </h3>
 
                       <p>
-                        Candidate
+                        {application.jobId?.postedBy?.name || "Company"}
                       </p>
                     </div>
                   </div>

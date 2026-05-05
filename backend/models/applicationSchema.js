@@ -17,14 +17,25 @@ const applicationSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide a cover letter!"],
   },
+
+  // ✅ FIXED (Number → String)
   phone: {
-    type: Number,
+    type: String,
     required: [true, "Please enter your Phone Number!"],
   },
+
   address: {
     type: String,
     required: [true, "Please enter your Address!"],
   },
+
+  // ✅ NEW FIELD (ADDED)
+  jobId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Job",
+    required: true,
+  },
+
   applicantID: {
     user: {
       type: mongoose.Schema.Types.ObjectId,

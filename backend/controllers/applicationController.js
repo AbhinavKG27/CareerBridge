@@ -11,13 +11,16 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
   }
 
   const { name, email, coverLetter, phone, address, jobId } = req.body;
+
   const applicantID = {
     user: req.user._id,
     role: "Job Seeker",
   };
+
   if (!jobId) {
     return next(new ErrorHandler("Job not found!", 404));
   }
+
   const jobDetails = await Job.findById(jobId);
   if (!jobDetails) {
     return next(new ErrorHandler("Job not found!", 404));
@@ -27,9 +30,11 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
     user: jobDetails.postedBy,
     role: "Employer",
   };
+
   if (!name || !email || !coverLetter || !phone || !address || !applicantID || !employerID) {
     return next(new ErrorHandler("Please fill all fields.", 400));
   }
+
   const application = await Application.create({
     name,
     email,
@@ -38,7 +43,9 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
     address,
     applicantID,
     employerID,
+    jobId, // ✅ ADDED
   });
+
   res.status(200).json({
     success: true,
     message: "Application Submitted!",
@@ -52,8 +59,18 @@ export const employerGetAllApplications = catchAsyncErrors(async (req, res, next
   if (role === "Job Seeker") {
     return next(new ErrorHandler("Job Seeker not allowed to access this resource.", 400));
   }
+
   const { _id } = req.user;
-  const applications = await Application.find({ "employerID.user": _id });
+
+  const applications = await Application.find({ "employerID.user": _id })
+    .populate({
+      path: "jobId",
+      populate: {
+        path: "postedBy",
+        model: "User",
+      },
+    });
+
   res.status(200).json({
     success: true,
     applications,
@@ -66,8 +83,18 @@ export const jobseekerGetAllApplications = catchAsyncErrors(async (req, res, nex
   if (role === "Employer") {
     return next(new ErrorHandler("Employer not allowed to access this resource.", 400));
   }
+
   const { _id } = req.user;
-  const applications = await Application.find({ "applicantID.user": _id });
+
+  const applications = await Application.find({ "applicantID.user": _id })
+    .populate({
+      path: "jobId",
+      populate: {
+        path: "postedBy",
+        model: "User",
+      },
+    });
+
   res.status(200).json({
     success: true,
     applications,
@@ -80,21 +107,26 @@ export const jobseekerDeleteApplication = catchAsyncErrors(async (req, res, next
   if (role === "Employer") {
     return next(new ErrorHandler("Employer not allowed to access this resource.", 400));
   }
+
   const { id } = req.params;
+
   const application = await Application.findById(id);
+
   if (!application) {
     return next(new ErrorHandler("Application not found!", 404));
   }
+
   if (application.applicantID.user.toString() !== req.user._id.toString()) {
     return next(new ErrorHandler("You can delete only your own applications.", 403));
   }
+
   await application.deleteOne();
+
   res.status(200).json({
     success: true,
     message: "Application Deleted!",
   });
 });
-
 
 // ✅ NEW FUNCTION (ADDED)
 export const updateApplicationStatus = catchAsyncErrors(async (req, res, next) => {

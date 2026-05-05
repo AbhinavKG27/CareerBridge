@@ -146,7 +146,7 @@ const Application = () => {
                 <label>Phone Number</label>
 
                 <input
-                  type="number"
+                  type="tel"
                   placeholder="+91 9876543210"
                   value={phone}
                   onChange={(e) =>

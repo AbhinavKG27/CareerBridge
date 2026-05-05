@@ -215,46 +215,36 @@ const PostJob = () => {
           <div className="dashboard-card">
             <h3>Location</h3>
 
-            <div className="dashboard-grid">
-              <div className="field">
-                <label>Country</label>
+            <div className="dashboard-grid location-grid">
+  <div className="field">
+    <label>Country</label>
+    <input
+      type="text"
+      value={country}
+      onChange={(e) => setCountry(e.target.value)}
+    />
+  </div>
 
-                <input
-                  type="text"
-                  placeholder="India"
-                  value={country}
-                  onChange={(e) =>
-                    setCountry(e.target.value)
-                  }
-                />
-              </div>
+  <div className="field">
+    <label>City</label>
+    <input
+      type="text"
+      value={city}
+      onChange={(e) => setCity(e.target.value)}
+    />
+  </div>
 
-              <div className="field">
-                <label>City</label>
-
-                <input
-                  type="text"
-                  placeholder="Bengaluru"
-                  value={city}
-                  onChange={(e) =>
-                    setCity(e.target.value)
-                  }
-                />
-              </div>
-            </div>
-
-            <div className="field">
-              <label>Office Location</label>
-
-              <input
-                type="text"
-                placeholder="Koramangala, Bengaluru"
-                value={location}
-                onChange={(e) =>
-                  setLocation(e.target.value)
-                }
-              />
-            </div>
+  {/* ✅ FULL WIDTH FIELD */}
+  <div className="field full-width">
+    <label>Office Location</label>
+    <input
+      type="text"
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
+      placeholder="Street, Area, Landmark..."
+    />
+  </div>
+</div>
           </div>
 
           <div className="dashboard-card">

@@ -33,6 +33,17 @@ const JobDetails = () => {
   const { isAuthorized, user } =
     useContext(Context);
 
+  const formatDate = (date) => {
+    if (!date) return "N/A";
+    return new Date(date).toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   useEffect(() => {
     axios
       .get(`${API}/api/v1/job/${id}`, {
@@ -108,7 +119,7 @@ const JobDetails = () => {
             <div className="info-card">
               <h4>Posted On</h4>
 
-              <p>{job.jobPostedOn}</p>
+              <p>{formatDate(job.jobPostedOn)}</p>
             </div>
 
             <div className="info-card">
