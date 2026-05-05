@@ -428,6 +428,6 @@ Made with ❤️ using the **MERN Stack**
 
 ⭐ Star this repo if you found it helpful!
 
-[![GitHub stars](https://img.shields.io/github/stars/your-username/CareerBridge?style=social)](https://github.com/your-username/CareerBridge)
+[![GitHub stars](https://img.shields.io/github/stars/your-username/CareerBridge?style=social)](https://github.com/abhinavkg27/CareerBridge)
 
 </div>
