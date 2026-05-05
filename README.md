@@ -10,31 +10,12 @@
 
 <br/>
 
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Frontend-4F46E5?style=for-the-badge)](https://careerbridge.vercel.app)
-[![Backend API](https://img.shields.io/badge/🔗%20Live%20API-Backend-10B981?style=for-the-badge)](https://careerbridge-api.onrender.com)
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Frontend-4F46E5?style=for-the-badge)](https://careerbridge-live.netlify.app)
+[![Backend API](https://img.shields.io/badge/🔗%20Live%20API-Backend-10B981?style=for-the-badge)](https://careerbridge-backend-9c8f.onrender.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
 <br/>
 
-## 🚀 Live Demo
-
-| | Link |
-|---|---|
-| 🎨 **Frontend** | [careerbridge.vercel.app](https://careerbridge-live.netlify.app) |
-| 🔗 **Backend API** | [careerbridge-api.onrender.com](https://careerbridge-backend-9c8f.onrender.com) |
-| 💾 **Database** | MongoDB Atlas (cloud-hosted) |
-
-### 🔑 Test Credentials
-
-**Job Seeker**
-- Email: `seeker@demo.com`
-- Password: `Demo@1234`
-
-**Employer**
-- Email: `employer@demo.com`
-- Password: `Demo@1234`
-
-> ℹ️ These are read-only demo accounts. Feel free to explore all features.
 
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white)
